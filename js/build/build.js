@@ -2,11 +2,13 @@
 window.addEventListener('DOMContentLoaded', function() {
 
     let mainSlider = require('../modules/mainSlider.js');
+    let modalGift = require('../modules/modalGift.js');
 
     mainSlider();
+    modalGift();
 
 });
-},{"../modules/mainSlider.js":2}],2:[function(require,module,exports){
+},{"../modules/mainSlider.js":2,"../modules/modalGift.js":3}],2:[function(require,module,exports){
 function mainSlider() {
     let slides = document.getElementsByClassName('main-slider-item');
     let slideIndex = 1;
@@ -37,4 +39,27 @@ function mainSlider() {
 };
 
 module.exports = mainSlider;
+},{}],3:[function(require,module,exports){
+function modalGift() {
+    let gift = document.querySelector('.fixed-gift');
+    let popupGift = document.querySelector('.popup-gift');
+    let popupGiftContent = popupGift.querySelector('.popup-content');
+    
+    gift.addEventListener('click', function() {
+        gift.style.display = 'none';
+        popupGift.style.display = 'block';
+        popupGiftContent.style.animation = 'zoomIn 1s';
+    });
+
+    popupGift.addEventListener('click', function() {
+        if(event.target.className == 'popup-close' || event.target.className == 'popup-gift') {
+            popupGiftContent.style.animation = 'zoomOut 1s';
+            let popupInterval = setInterval(function() {
+                popupGift.style.display = 'none';
+            }, 1000);
+        }
+    });
+};
+
+module.exports = modalGift;
 },{}]},{},[1]);
