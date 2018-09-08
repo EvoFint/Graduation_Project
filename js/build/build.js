@@ -4,13 +4,15 @@ window.addEventListener('DOMContentLoaded', function() {
     let mainSlider = require('../modules/mainSlider.js');
     let modalGift = require('../modules/modalGift.js');
     let modalDesign = require('../modules/modalDesign.js');
+    let modalConsultation = require('../modules/modalConsultation.js');
 
     mainSlider();
     modalGift();
     modalDesign();
+    modalConsultation();
 
 });
-},{"../modules/mainSlider.js":2,"../modules/modalDesign.js":3,"../modules/modalGift.js":4}],2:[function(require,module,exports){
+},{"../modules/mainSlider.js":2,"../modules/modalConsultation.js":3,"../modules/modalDesign.js":4,"../modules/modalGift.js":5}],2:[function(require,module,exports){
 function mainSlider() {
     let slides = document.getElementsByClassName('main-slider-item');
     let slideIndex = 1;
@@ -42,12 +44,56 @@ function mainSlider() {
 
 module.exports = mainSlider;
 },{}],3:[function(require,module,exports){
+function modalConsultation() {
+    let buttonConsultation = document.getElementsByClassName('button-consultation');
+    let popupConsultation = document.querySelector('.popup-consultation');
+    let popupConsContent = popupConsultation.querySelector('.popup-content');
+    let popupDesign = document.querySelector('.popup-design');
+    let popupGift = document.querySelector('.popup-gift');
+
+    window.addEventListener('click', function() {
+        event.preventDefault();
+        let elem = event.target;
+        for(let i = 0; i < buttonConsultation.length; i++) {
+            if(elem == buttonConsultation[i]) {
+                modal();
+            }
+        }
+    });
+
+    setTimeout(function() {
+        if(popupGift.style.display == '' && popupDesign.style.display == '' && popupConsultation.style.display == '') {
+            modal();
+        }
+    }, 60000);
+
+    popupConsultation.addEventListener('click', function() {
+        event.preventDefault();
+        if(event.target.className == 'popup-close' || event.target.className == 'popup-consultation') {
+            popupConsContent.style.animation = 'zoomOut 1s';
+            document.body.style.overflow = '';
+            let popupInterval = setInterval(function() {
+                popupConsultation.style.display = 'none';
+            }, 500);
+            setTimeout(function() {
+                clearInterval(popupInterval);
+            }, 1000);
+        }
+    });
+
+    function modal() {
+        popupConsultation.style.display = 'block';
+        popupConsContent.style.animation = 'zoomIn 1s';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+module.exports = modalConsultation;
+},{}],4:[function(require,module,exports){
 function modalDesign() {
     let buttonDesign = document.getElementsByClassName('button-design');
     let popupDesign = document.querySelector('.popup-design');
     let popupDesignContent = popupDesign.querySelector('.popup-content');
-
-    console.log(buttonDesign)
 
     popupDesign.addEventListener('click', function() {
         event.preventDefault();
@@ -78,17 +124,14 @@ function modalDesign() {
 };
 
 module.exports = modalDesign;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 function modalGift() {
     let gift = document.querySelector('.fixed-gift');
     let popupGift = document.querySelector('.popup-gift');
     let popupGiftContent = popupGift.querySelector('.popup-content');
     
     gift.addEventListener('click', function() {
-        gift.style.display = 'none';
-        popupGift.style.display = 'block';
-        popupGiftContent.style.animation = 'zoomIn 1s';
-        document.body.style.overflow = 'hidden';
+        modal();
     });
 
     popupGift.addEventListener('click', function() {
@@ -103,6 +146,27 @@ function modalGift() {
             }, 1000);
         }
     });
+
+    let endSiteInterval = setInterval(function() {
+        endSite();
+    }, 1000);
+
+    function modal() {
+        gift.style.display = 'none';
+        popupGift.style.display = 'block';
+        popupGiftContent.style.animation = 'zoomIn 1s';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function endSite() {
+        let scrollHeight = document.body.scrollHeight;
+        let posTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+        if(posTop + 700 == scrollHeight && gift.style.display == '') {
+            modal();
+            clearInterval(endSiteInterval);
+        }
+    }
 };
 
 module.exports = modalGift;

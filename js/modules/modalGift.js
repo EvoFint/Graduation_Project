@@ -4,10 +4,7 @@ function modalGift() {
     let popupGiftContent = popupGift.querySelector('.popup-content');
     
     gift.addEventListener('click', function() {
-        gift.style.display = 'none';
-        popupGift.style.display = 'block';
-        popupGiftContent.style.animation = 'zoomIn 1s';
-        document.body.style.overflow = 'hidden';
+        modal();
     });
 
     popupGift.addEventListener('click', function() {
@@ -22,6 +19,27 @@ function modalGift() {
             }, 1000);
         }
     });
+
+    let endSiteInterval = setInterval(function() {
+        endSite();
+    }, 1000);
+
+    function modal() {
+        gift.style.display = 'none';
+        popupGift.style.display = 'block';
+        popupGiftContent.style.animation = 'zoomIn 1s';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function endSite() {
+        let scrollHeight = document.body.scrollHeight;
+        let posTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
+        if(posTop + 700 == scrollHeight && gift.style.display == '') {
+            modal();
+            clearInterval(endSiteInterval);
+        }
+    }
 };
 
 module.exports = modalGift;
