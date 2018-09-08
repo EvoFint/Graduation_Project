@@ -3,12 +3,14 @@ window.addEventListener('DOMContentLoaded', function() {
 
     let mainSlider = require('../modules/mainSlider.js');
     let modalGift = require('../modules/modalGift.js');
+    let modalDesign = require('../modules/modalDesign.js');
 
     mainSlider();
     modalGift();
+    modalDesign();
 
 });
-},{"../modules/mainSlider.js":2,"../modules/modalGift.js":3}],2:[function(require,module,exports){
+},{"../modules/mainSlider.js":2,"../modules/modalDesign.js":3,"../modules/modalGift.js":4}],2:[function(require,module,exports){
 function mainSlider() {
     let slides = document.getElementsByClassName('main-slider-item');
     let slideIndex = 1;
@@ -40,6 +42,43 @@ function mainSlider() {
 
 module.exports = mainSlider;
 },{}],3:[function(require,module,exports){
+function modalDesign() {
+    let buttonDesign = document.getElementsByClassName('button-design');
+    let popupDesign = document.querySelector('.popup-design');
+    let popupDesignContent = popupDesign.querySelector('.popup-content');
+
+    console.log(buttonDesign)
+
+    popupDesign.addEventListener('click', function() {
+        event.preventDefault();
+        if(event.target.className == 'popup-close' || event.target.className == 'popup-design') {
+            popupDesignContent.style.animation = 'zoomOut 1s';
+            document.body.style.overflow = '';
+            let popupInterval = setInterval(function() {
+                popupDesign.style.display = 'none';
+            }, 500);
+            setTimeout(function() {
+                clearInterval(popupInterval);
+            }, 1000);
+        }
+    });
+
+    window.addEventListener('click', function() {
+        event.preventDefault();
+        let elem = event.target;
+        for(let i = 0; i < buttonDesign.length; i++) {
+            if(elem == buttonDesign[i]) {
+                popupDesign.style.display = 'block';
+                popupDesignContent.style.animation = 'zoomIn 1s';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    });
+
+};
+
+module.exports = modalDesign;
+},{}],4:[function(require,module,exports){
 function modalGift() {
     let gift = document.querySelector('.fixed-gift');
     let popupGift = document.querySelector('.popup-gift');
@@ -49,13 +88,18 @@ function modalGift() {
         gift.style.display = 'none';
         popupGift.style.display = 'block';
         popupGiftContent.style.animation = 'zoomIn 1s';
+        document.body.style.overflow = 'hidden';
     });
 
     popupGift.addEventListener('click', function() {
         if(event.target.className == 'popup-close' || event.target.className == 'popup-gift') {
             popupGiftContent.style.animation = 'zoomOut 1s';
+            document.body.style.overflow = '';
             let popupInterval = setInterval(function() {
                 popupGift.style.display = 'none';
+            }, 500);
+            setTimeout(function() {
+                clearInterval(popupInterval);
             }, 1000);
         }
     });
