@@ -3,8 +3,6 @@ function modalDesign() {
     let popupDesign = document.querySelector('.popup-design');
     let popupDesignContent = popupDesign.querySelector('.popup-content');
 
-    console.log(buttonDesign)
-
     popupDesign.addEventListener('click', function() {
         event.preventDefault();
         if(event.target.className == 'popup-close' || event.target.className == 'popup-design') {
